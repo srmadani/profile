@@ -1,1 +1,3 @@
-google_analytics: ${{ secrets.GA_MEASUREMENT_ID }}
+# _config.yml
+
+google_analytics: GA_ID_PLACEHOLDER
