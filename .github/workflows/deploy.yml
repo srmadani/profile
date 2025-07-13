@@ -1,3 +1,5 @@
+# .github/workflows/deploy.yml
+
 name: Build and Deploy to GitHub Pages
 
 on:
@@ -21,17 +23,23 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+
       - name: Setup Ruby 💎
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Or a version compatible with Jekyll
+          ruby-version: '3.1'
           bundler-cache: true # Installs gems from the Gemfile and caches them
+
+      - name: Inject Google Analytics ID 🕵️‍♂️
+        # Find the placeholder in the config file and replace it with the secret
+        run: |
+          sed -i "s/GA_ID_PLACEHOLDER/${{ secrets.GA_MEASUREMENT_ID }}/g" _config.yml
+
       - name: Build with Jekyll 🔨
-        # Pass the secret to the build step
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
-          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+
       - name: Upload artifact ⬆️
         uses: actions/upload-pages-artifact@v3
 
